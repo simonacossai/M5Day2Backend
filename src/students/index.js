@@ -26,12 +26,8 @@ router.get("/:identifier", (req, res) => {
   res.send(student)
 })
 
-// 3. router.post("/")
 
 router.post("/", (req, res) => {
-  // handler
-
-  // 1. read the old content from the file
   const studentsFilePath = path.join(__dirname, "students.json")
   const fileAsABuffer = fs.readFileSync(studentsFilePath)
   const fileAsAString = fileAsABuffer.toString()
