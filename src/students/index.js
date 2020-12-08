@@ -5,22 +5,22 @@ const uniqid = require("uniqid")
 
 const router = express.Router()
 
+const getFile=()=>{
+    const studentsFilePath = path.join(__dirname, "students.json")
+    const fileAsABuffer = fs.readFileSync(studentsFilePath)
+    const fileAsAString = fileAsABuffer.toString()
+    const studentsArray = JSON.parse(fileAsAString)
+    return studentsArray
+}
 
 router.get("/", (req, res) => {
-  const studentsFilePath = path.join(__dirname, "students.json")
-  const fileAsABuffer = fs.readFileSync(studentsFilePath)
-  const fileAsAString = fileAsABuffer.toString()
-  const studentsArray = JSON.parse(fileAsAString)
+  const studentsArray= getFile();
   res.send(studentsArray)
 })
 
 
 router.get("/:identifier", (req, res) => {
-
-  const studentsFilePath = path.join(__dirname, "students.json")
-  const fileAsABuffer = fs.readFileSync(studentsFilePath)
-  const fileAsAString = fileAsABuffer.toString()
-  const studentsArray = JSON.parse(fileAsAString)
+  const studentsArray= getFile();
   const idComingFromRequest = req.params.identifier
   const student = studentsArray.filter(student => student.ID === idComingFromRequest)
   res.send(student)
@@ -29,9 +29,7 @@ router.get("/:identifier", (req, res) => {
 
 router.post("/", (req, res) => {
   const studentsFilePath = path.join(__dirname, "students.json")
-  const fileAsABuffer = fs.readFileSync(studentsFilePath)
-  const fileAsAString = fileAsABuffer.toString()
-  const studentsArray = JSON.parse(fileAsAString)
+  const studentsArray= getFile();
   const newstudent = req.body
   newstudent.ID = uniqid()
   studentsArray.push(newstudent)
@@ -42,9 +40,7 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
   
   const studentsFilePath = path.join(__dirname, "students.json")
-  const fileAsABuffer = fs.readFileSync(studentsFilePath)
-  const fileAsAString = fileAsABuffer.toString()
-  const studentsArray = JSON.parse(fileAsAString)
+  const studentsArray= getFile();
   const newstudentsArray = studentsArray.filter(student => student.ID !== req.params.id)
   const modifiedstudent = req.body
   modifiedstudent.ID = req.params.id
@@ -58,9 +54,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
   
   const studentsFilePath = path.join(__dirname, "students.json")
-  const fileAsABuffer = fs.readFileSync(studentsFilePath)
-  const fileAsAString = fileAsABuffer.toString()
-  const studentsArray = JSON.parse(fileAsAString)
+  const studentsArray= getFile();
   const newstudentsArray = studentsArray.filter(student => student.ID !== req.params.id)
   fs.writeFileSync(studentsFilePath, JSON.stringify(newstudentsArray))
 
