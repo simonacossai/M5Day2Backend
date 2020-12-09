@@ -15,7 +15,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-list-endpoints": "^5.0.0",
+    "express-validator": "^6.8.0",
     "uniqid": "^5.2.0"
   }
 }

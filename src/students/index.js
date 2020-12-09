@@ -13,11 +13,29 @@ const getFile=()=>{
     return studentsArray
 }
 
+const readFile = fileName => {
+  const buffer = fs.readFileSync(path.join(__dirname, fileName))
+  const fileContent = buffer.toString()
+  return JSON.parse(fileContent)
+}
+
 router.get("/", (req, res) => {
   const studentsArray= getFile();
   res.send(studentsArray)
 })
 
+router.get("/:id/projects", (req, res) => {
+  const projects= JSON.parse(fs.readFileSync(path.join(__dirname, "../projects", "projects.json")).toString());
+  const studentId= req.params.id;
+  const  studentProjects= projects.filter((project) => project.studentId === studentId);
+  if (studentProjects.length === 0) {
+    res.send("there are no projects for this student!");
+  } else {
+    res.send(studentProjects);
+  }
+});
+
+  
 
 router.get("/:identifier", (req, res) => {
   const studentsArray= getFile();
@@ -38,13 +56,11 @@ router.post("/", (req, res) => {
   res.status(201).send({ id: newstudent.ID })
 })
 router.put("/:id", (req, res) => {
-  
   const studentsFilePath = path.join(__dirname, "students.json")
   const studentsArray= getFile();
   const newstudentsArray = studentsArray.filter(student => student.ID !== req.params.id)
   const modifiedstudent = req.body
   modifiedstudent.ID = req.params.id
-
   newstudentsArray.push(modifiedstudent)
   fs.writeFileSync(studentsFilePath, JSON.stringify(newstudentsArray))
   res.send("Modify student route")
