@@ -2,8 +2,16 @@ const express = require("express")
 const fs = require("fs") 
 const path = require("path") 
 const uniqid = require("uniqid") 
+const multer = require("multer")
+const { writeFile, createReadStream } = require("fs-extra")
+const { pipeline } = require("stream")
+const zlib = require("zlib")
+const { join } = require("path")
+
 
 const router = express.Router()
+const upload = multer({})
+
 
 const getFile=()=>{
     const studentsFilePath = path.join(__dirname, "students.json")
@@ -12,6 +20,7 @@ const getFile=()=>{
     const studentsArray = JSON.parse(fileAsAString)
     return studentsArray
 }
+
 
 const readFile = fileName => {
   const buffer = fs.readFileSync(path.join(__dirname, fileName))
@@ -34,6 +43,7 @@ router.get("/:id/projects", (req, res) => {
     res.send(studentProjects);
   }
 });
+
 
   
 

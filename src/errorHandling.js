@@ -21,7 +21,7 @@ const notFoundHandler = (err, req, res, next) => {
   
   const catchAllHandler = (err, req, res, next) => {
     if (!res.headersSent) {
-      res.status(err.httpStatusCode || 500).send("Server Error")
+      res.status(err.httpStatusCode || 500).send(err)
     }
   }
   

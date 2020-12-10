@@ -30,7 +30,6 @@ router.get("/:id", (req, res, next) => {
 })
 
 
-
 router.get("/", (req, res, next) => {
   try {
     const projectsDB = readFile("projects.json")
@@ -101,7 +100,17 @@ router.post(
     }
   }
 )
-
+router.get("/:id/reviews", (req, res) => {
+    const reviews= JSON.parse(fs.readFileSync(path.join(__dirname, "../reviews", "reviews.json")).toString());
+    const projectId= req.params.id;
+    const projectReviews= reviews.filter((review) => review.projectId === projectId);
+    if (projectReviews.length === 0) {
+      res.send("there are no reviews for this project yet!");
+    } else {
+      res.send(projectReviews);
+    }
+  });
+  
 router.delete("/:id", (req, res, next) => {
   try {
     const projectsDB = readFile("projects.json")
